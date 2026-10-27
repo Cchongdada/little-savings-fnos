@@ -1,0 +1,27 @@
+[
+  {
+    "stepTitle": "重设账本访问密码",
+    "items": [
+      {
+        "type": "tips",
+        "helpText": "重设密码会使已有登录失效，账本数据不变。提交后请在应用中心重新启动小小攒。"
+      },
+      {
+        "type": "password",
+        "field": "wizard_password",
+        "label": "新的访问密码",
+        "rules": [
+          {
+            "required": true,
+            "message": "请输入新的访问密码"
+          },
+          {
+            "min": 8,
+            "max": 128,
+            "message": "密码须为8至128个字符"
+          }
+        ]
+      }
+    ]
+  }
+]

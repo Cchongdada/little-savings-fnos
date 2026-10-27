@@ -34,4 +34,3 @@ python3 tests/package.py little-savings.fpk
 
 应用共享目录名为 `little-savings/data`，实际卷路径由 fnOS 提供。不要把其中的 `auth.json`、`ledger.json`、`exchange-rate.json` 或 `backups/` 提交到公开仓库。忘记密码时可在飞牛应用配置向导中重设，账本记录不受影响。
 
-

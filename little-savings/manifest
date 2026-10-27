@@ -1,0 +1,16 @@
+appname=little-savings
+version=1.1.2
+display_name=小小攒
+desc=澳门代金券攒钱账本：自动计算消费券优惠与人民币成本，账本和备份保存在应用共享文件夹。
+platform=x86
+arch=x86_64
+source=thirdparty
+maintainer=Little Savings
+distributor=Little Savings
+desktop_uidir=ui
+desktop_applaunchname=little-savings.main
+install_dep_apps=nodejs_v22
+ctl_stop=true
+service_port=18760
+checkport=true
+disable_authorization_path=true

@@ -1,0 +1,6 @@
+#!/bin/bash
+set -eu
+export PATH="/var/apps/nodejs_v22/target/bin:$PATH"
+export DATA_DIR="${TRIM_DATA_SHARE_PATHS%%:*}"
+if test -f "$DATA_DIR/auth.json"; then exit 0; fi
+if ! node "${TRIM_APPDEST}/server/server.cjs" --init-password 2> "${TRIM_TEMP_LOGFILE:-/dev/stderr}"; then exit 1; fi

@@ -1,0 +1,27 @@
+[
+  {
+    "stepTitle": "设置小小攒访问密码",
+    "items": [
+      {
+        "type": "tips",
+        "helpText": "网页端口：18760。账本数据保存在应用文件 little-savings/data。应用图标和手机网址使用同一份NAS账本。"
+      },
+      {
+        "type": "password",
+        "field": "wizard_password",
+        "label": "账本访问密码",
+        "rules": [
+          {
+            "required": true,
+            "message": "请设置账本访问密码"
+          },
+          {
+            "min": 8,
+            "max": 128,
+            "message": "密码须为8至128个字符"
+          }
+        ]
+      }
+    ]
+  }
+]

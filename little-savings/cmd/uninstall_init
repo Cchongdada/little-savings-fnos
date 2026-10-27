@@ -1,0 +1,4 @@
+#!/bin/bash
+set -eu
+"$(dirname "$0")/main" stop
+# 不删除应用共享文件夹中的账本、密码配置和备份。

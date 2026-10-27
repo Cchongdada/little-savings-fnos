@@ -1,0 +1,12 @@
+.env
+.env.*
+node_modules/
+dist/
+work/
+*.tgz
+*.zip
+ledger.json
+auth.json
+exchange-rate.json
+backups/
+*.log

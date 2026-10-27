@@ -1,0 +1,36 @@
+#!/bin/bash
+set -eu
+export PATH="/var/apps/nodejs_v22/target/bin:$PATH"
+PID_FILE="${TRIM_PKGVAR}/app.pid"
+LOG_FILE="${TRIM_PKGVAR}/app.log"
+APP_SERVER="${TRIM_APPDEST}/server/server.cjs"
+fail() { printf '%s\n' "$1" > "${TRIM_TEMP_LOGFILE:-/dev/stderr}"; exit 1; }
+get_pid() { test -f "$PID_FILE" && head -n 1 "$PID_FILE" | tr -d '[:space:]'; }
+alive() { local pid; pid="$(get_pid || true)"; [[ "$pid" =~ ^[0-9]+$ ]] && kill -0 "$pid" 2>/dev/null; }
+case "${1:-}" in
+ start)
+  if alive; then exit 0; fi
+  command -v node >/dev/null || fail '请先在应用中心安装 Node.js v22（nodejs_v22）。'
+  DATA_DIR="${TRIM_DATA_SHARE_PATHS%%:*}"
+  test -n "$DATA_DIR" && test -d "$DATA_DIR" && test -w "$DATA_DIR" || fail '无法访问应用共享文件夹，请检查应用文件权限。'
+  test -f "$DATA_DIR/auth.json" || fail '访问密码尚未设置，请在应用配置向导中设置密码。'
+  export DATA_DIR PORT="${TRIM_SERVICE_PORT:-18760}"
+  unset wizard_password
+  mkdir -p "$TRIM_PKGVAR"
+  if test -f "$LOG_FILE" && test "$(stat -c %s "$LOG_FILE")" -gt 2097152; then mv "$LOG_FILE" "$LOG_FILE.previous"; fi
+  nohup node "$APP_SERVER" >> "$LOG_FILE" 2>&1 < /dev/null &
+  printf '%s\n' "$!" > "$PID_FILE"
+  sleep 1
+  alive || fail '启动失败。请检查18760端口是否被占用，或查看应用日志 app.log。'
+  ;;
+ stop)
+  if alive; then
+   pid="$(get_pid)"; kill -TERM "$pid"
+   for _ in {1..10}; do alive || break; sleep 1; done
+   if alive; then kill -KILL "$pid"; fi
+  fi
+  rm -f "$PID_FILE"
+  ;;
+ status) if alive; then exit 0; else exit 3; fi ;;
+ *) fail '未知操作。' ;;
+esac
